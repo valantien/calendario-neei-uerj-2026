@@ -1,0 +1,13 @@
+# OS
+.DS_Store
+
+# Backups / arquivos temporários
+*.zip
+temp.md
+
+# Documentos locais de especificação (não vão para o deploy)
+docs/
+
+# Tooling
+.vercel/
+.claude/

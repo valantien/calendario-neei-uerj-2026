@@ -1,0 +1,2436 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Calendário Visual e Cronograma Interativo do Curso de Extensão NEEI/UERJ 2026: Neurodiversidade, Síndromes Raras e o contexto da Educação Básica.">
+  <title>Calendário Interativo - Curso de Extensão NEEI/UERJ 2026</title>
+  
+  <!-- Google Fonts for premium typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <style>
+    /* ----------------------------------------------------
+       CASCADE LAYERS DEFINITION
+       ---------------------------------------------------- */
+    @layer reset, design-tokens, base, layouts, components, utilities;
+
+    @layer reset {
+      *, *::before, *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      
+      html {
+        scroll-behavior: smooth;
+        -webkit-text-size-adjust: 100%;
+      }
+      
+      body {
+        min-height: 100vh;
+        text-rendering: optimizeSpeed;
+        line-height: 1.5;
+        font-family: var(--font-body);
+        background: var(--bg-gradient);
+        color: var(--text-color);
+        transition: background var(--transition-speed) ease, color var(--transition-speed) ease;
+        overflow-x: hidden;
+      }
+      
+      img {
+        max-width: 100%;
+        display: block;
+      }
+      
+      button, input {
+        font: inherit;
+        color: inherit;
+        background: none;
+        border: none;
+      }
+      
+      button {
+        cursor: pointer;
+      }
+    }
+
+    @layer design-tokens {
+      :root {
+        /* Fonts */
+        --font-heading: 'Outfit', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        --font-body: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        
+        /* Transition */
+        --transition-speed: 0.3s;
+        
+        /* Module Colors */
+        --color-m0-rgb: 239, 68, 68;    /* Coral/Red */
+        --color-m1-rgb: 14, 165, 233;   /* Cyan */
+        --color-m2-rgb: 139, 92, 246;   /* Purple */
+        --color-m3-rgb: 79, 70, 229;    /* Indigo */
+        --color-m4-rgb: 236, 72, 153;   /* Pink */
+        --color-m5-rgb: 249, 115, 22;   /* Orange/Amber (IARA) */
+        --color-m6-rgb: 16, 185, 129;   /* Emerald */
+        --color-m7-rgb: 234, 179, 8;    /* Gold */
+        
+        --color-m0: rgb(var(--color-m0-rgb));
+        --color-m1: rgb(var(--color-m1-rgb));
+        --color-m2: rgb(var(--color-m2-rgb));
+        --color-m3: rgb(var(--color-m3-rgb));
+        --color-m4: rgb(var(--color-m4-rgb));
+        --color-m5: rgb(var(--color-m5-rgb));
+        --color-m6: rgb(var(--color-m6-rgb));
+        --color-m7: rgb(var(--color-m7-rgb));
+
+        /* Light / Dark Mode Tokens */
+        color-scheme: dark light;
+      }
+
+      /* Dark Mode Variables (Default) */
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --bg-gradient: radial-gradient(circle at 0% 0%, #0d1220 0%, #070913 100%);
+          --bg-sidebar: rgba(13, 18, 32, 0.45);
+          --bg-card: rgba(20, 27, 47, 0.35);
+          --bg-card-hover: rgba(30, 41, 73, 0.5);
+          --border-color: rgba(255, 255, 255, 0.08);
+          --border-hover: rgba(255, 255, 255, 0.15);
+          --text-color: #f1f5f9;
+          --text-muted: #94a3b8;
+          --text-inverse: #0f172a;
+          --glass-blur: blur(16px);
+          --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.3);
+          --shadow-md: 0 8px 32px rgba(0, 0, 0, 0.4);
+          --shadow-glow: 0 0 20px rgba(139, 92, 246, 0.15);
+          
+          --accent-primary: #8b5cf6;
+          --accent-glow: rgba(139, 92, 246, 0.3);
+          --bg-input: rgba(10, 15, 30, 0.6);
+          --holiday-color: #f87171;
+        }
+      }
+
+      /* Light Mode Variables Override */
+      @media (prefers-color-scheme: light) {
+        :root {
+          --bg-gradient: radial-gradient(circle at 0% 0%, #f8fafc 0%, #e2e8f0 100%);
+          --bg-sidebar: rgba(255, 255, 255, 0.7);
+          --bg-card: rgba(255, 255, 255, 0.55);
+          --bg-card-hover: rgba(255, 255, 255, 0.85);
+          --border-color: rgba(0, 0, 0, 0.08);
+          --border-hover: rgba(0, 0, 0, 0.15);
+          --text-color: #0f172a;
+          --text-muted: #475569;
+          --text-inverse: #ffffff;
+          --glass-blur: blur(16px);
+          --shadow-sm: 0 2px 8px rgba(15, 23, 42, 0.05);
+          --shadow-md: 0 8px 32px rgba(15, 23, 42, 0.08);
+          --shadow-glow: 0 0 20px rgba(79, 70, 229, 0.08);
+          
+          --accent-primary: #4f46e5;
+          --accent-glow: rgba(79, 70, 229, 0.2);
+          --bg-input: rgba(255, 255, 255, 0.8);
+          --holiday-color: #dc2626;
+        }
+      }
+
+      /* Forced attributes on html tag for manual toggling if needed */
+      html[data-theme="dark"] {
+        --bg-gradient: radial-gradient(circle at 0% 0%, #0d1220 0%, #070913 100%);
+        --bg-sidebar: rgba(13, 18, 32, 0.45);
+        --bg-card: rgba(20, 27, 47, 0.35);
+        --bg-card-hover: rgba(30, 41, 73, 0.5);
+        --border-color: rgba(255, 255, 255, 0.08);
+        --border-hover: rgba(255, 255, 255, 0.15);
+        --text-color: #f1f5f9;
+        --text-muted: #94a3b8;
+        --text-inverse: #0f172a;
+        --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.3);
+        --shadow-md: 0 8px 32px rgba(0, 0, 0, 0.4);
+        --shadow-glow: 0 0 20px rgba(139, 92, 246, 0.15);
+        --accent-primary: #8b5cf6;
+        --accent-glow: rgba(139, 92, 246, 0.3);
+        --bg-input: rgba(10, 15, 30, 0.6);
+        --holiday-color: #f87171;
+      }
+
+      html[data-theme="light"] {
+        --bg-gradient: radial-gradient(circle at 0% 0%, #f8fafc 0%, #e2e8f0 100%);
+        --bg-sidebar: rgba(255, 255, 255, 0.7);
+        --bg-card: rgba(255, 255, 255, 0.55);
+        --bg-card-hover: rgba(255, 255, 255, 0.85);
+        --border-color: rgba(0, 0, 0, 0.08);
+        --border-hover: rgba(0, 0, 0, 0.15);
+        --text-color: #0f172a;
+        --text-muted: #475569;
+        --text-inverse: #ffffff;
+        --shadow-sm: 0 2px 8px rgba(15, 23, 42, 0.05);
+        --shadow-md: 0 8px 32px rgba(15, 23, 42, 0.08);
+        --shadow-glow: 0 0 20px rgba(79, 70, 229, 0.08);
+        --accent-primary: #4f46e5;
+        --accent-glow: rgba(79, 70, 229, 0.2);
+        --bg-input: rgba(255, 255, 255, 0.8);
+        --holiday-color: #dc2626;
+      }
+    }
+
+    @layer base {
+      /* Focus ring management */
+      :focus-visible {
+        outline: 2px solid var(--accent-primary);
+        outline-offset: 4px;
+      }
+      
+      /* Custom Scrollbar */
+      ::-webkit-scrollbar {
+        width: 8px;
+        height: 8px;
+      }
+      ::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: var(--border-color);
+        border-radius: 4px;
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background: var(--border-hover);
+      }
+    }
+
+    @layer layouts {
+      .app-wrapper {
+        display: grid;
+        grid-template-columns: 340px 1fr;
+        min-height: 100vh;
+        position: relative;
+      }
+
+      /* Sidebar layout */
+      .sidebar {
+        background: var(--bg-sidebar);
+        backdrop-filter: var(--glass-blur);
+        -webkit-backdrop-filter: var(--glass-blur);
+        border-inline-end: 1px solid var(--border-color);
+        padding: 2.25rem 1.5rem;
+        display: flex;
+        flex-direction: column;
+        gap: 1.75rem;
+        height: 100vh;
+        position: sticky;
+        top: 0;
+        z-index: 10;
+        overflow-y: auto;
+      }
+
+      /* Main container layout */
+      .main-content {
+        padding: 2.5rem;
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+        overflow-y: auto;
+        max-height: 100vh;
+      }
+
+      .calendar-section {
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+      }
+
+      /* Calendar Grid */
+      .calendar-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 1.5rem;
+      }
+
+      /* Sticky details drawer bottom on mobile, side panel on desktop */
+      .details-drawer {
+        position: fixed;
+        bottom: 0;
+        right: 0;
+        width: 100%;
+        max-width: 480px;
+        height: 100vh;
+        background: var(--bg-sidebar);
+        backdrop-filter: var(--glass-blur);
+        -webkit-backdrop-filter: var(--glass-blur);
+        border-inline-start: 1px solid var(--border-color);
+        box-shadow: var(--shadow-md);
+        z-index: 100;
+        transform: translateX(100%);
+        transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        display: flex;
+        flex-direction: column;
+      }
+
+      .details-drawer.open {
+        transform: translateX(0);
+      }
+
+      /* Scrim overlay behind the drawer */
+      .drawer-overlay {
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.5);
+        backdrop-filter: blur(2px);
+        -webkit-backdrop-filter: blur(2px);
+        z-index: 90;
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.4s ease, visibility 0.4s ease;
+      }
+
+      .drawer-overlay.open {
+        opacity: 1;
+        visibility: visible;
+      }
+
+      .mobile-drag-handle {
+        display: none;
+        width: 36px;
+        height: 4px;
+        background: var(--border-color);
+        border-radius: 9999px;
+        margin: 0.5rem auto 0 auto;
+        flex-shrink: 0;
+      }
+
+      /* Responsive adaptation */
+      @media (max-width: 1024px) {
+        /* Single-column flow; dissolve the sidebar box so the calendar
+           can sit right under the essential controls and the secondary
+           blocks drop to the bottom. */
+        .app-wrapper {
+          display: flex;
+          flex-direction: column;
+          gap: 1.25rem;
+          padding: 1.5rem;
+        }
+        .sidebar {
+          display: contents;
+        }
+        .course-header { order: 1; }
+        .stats-panel   { order: 2; }
+        .search-box    { order: 3; }
+        .filter-group  { order: 4; }
+        .main-content  {
+          order: 5;
+          padding: 0;
+          max-height: none;
+        }
+        .sb-classroom {
+          order: 6;
+          margin-top: 0 !important;
+        }
+        .sb-partners          { order: 7; }
+        .theme-toggle-container { order: 8; }
+        .details-drawer {
+          height: 80vh;
+          max-width: 100%;
+          transform: translateY(100%);
+          border-inline-start: none;
+          border-top: 1px solid var(--border-color);
+          border-radius: 24px 24px 0 0;
+        }
+        .details-drawer.open {
+          transform: translateY(0);
+        }
+        .mobile-drag-handle {
+          display: block;
+        }
+      }
+
+      /* Premium Mobile-First Optimizations (Under 768px) */
+      @media (max-width: 768px) {
+        .app-wrapper {
+          padding: 1rem;
+          gap: 1rem;
+        }
+        .main-content {
+          padding: 0;
+          gap: 1.25rem;
+        }
+        
+        .top-navbar {
+          gap: 0.75rem;
+        }
+        
+        .section-title {
+          font-size: 1.35rem;
+        }
+
+        .course-subtitle {
+          display: none !important; /* Hide long subtitle to maximize vertical screen room */
+        }
+
+        .course-header {
+          gap: 0.25rem;
+        }
+
+        .course-title {
+          font-size: 1.35rem;
+        }
+
+        /* Swipeable Stats Panel */
+        .stats-panel {
+          display: flex !important;
+          flex-direction: row !important;
+          overflow-x: auto !important;
+          gap: 0.5rem !important;
+          scrollbar-width: none;
+          -webkit-overflow-scrolling: touch;
+          padding-bottom: 0.25rem;
+        }
+        
+        .stats-panel::-webkit-scrollbar {
+          display: none;
+        }
+        
+        .stats-panel .stat-card {
+          flex: 0 0 135px !important;
+          grid-column: auto !important;
+          padding: 0.5rem 0.6rem !important;
+          height: auto;
+        }
+        
+        .stats-panel .stat-card[style*="grid-column"] {
+          flex: 0 0 200px !important; /* timezone and course duration get more horizontal room */
+        }
+
+        /* Swipeable Module Tabs */
+        .filter-group {
+          gap: 0.35rem;
+        }
+        
+        .filter-tabs {
+          flex-direction: row !important;
+          overflow-x: auto !important;
+          gap: 0.5rem !important;
+          scrollbar-width: none;
+          -webkit-overflow-scrolling: touch;
+          padding-block: 0.25rem;
+        }
+        
+        .filter-tabs::-webkit-scrollbar {
+          display: none;
+        }
+        
+        .filter-tabs .filter-tab {
+          width: auto !important;
+          white-space: nowrap !important;
+          padding: 0.5rem 0.75rem !important;
+          flex-shrink: 0 !important;
+          font-size: 0.775rem !important;
+        }
+
+        /* Perfectly square touch-friendly day cells */
+        .day-cell {
+          aspect-ratio: 1;
+          font-size: 0.85rem;
+        }
+        
+        .event-dot {
+          bottom: 3px;
+          width: 5px;
+          height: 5px;
+        }
+
+        .calendar-section {
+          gap: 1rem;
+        }
+
+        .calendar-grid {
+          gap: 1rem;
+        }
+      }
+    }
+
+    @layer components {
+      /* Course Header */
+      .course-header {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+      }
+
+      .course-badge {
+        display: inline-flex;
+        align-self: flex-start;
+        padding: 0.25rem 0.75rem;
+        border-radius: 9999px;
+        background: linear-gradient(135deg, rgba(139, 92, 246, 0.15) 0%, rgba(79, 70, 229, 0.15) 100%);
+        border: 1px solid rgba(139, 92, 246, 0.25);
+        color: var(--accent-primary);
+        font-family: var(--font-heading);
+        font-size: 0.75rem;
+        font-weight: 700;
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+      }
+
+      .course-title {
+        font-family: var(--font-heading);
+        font-size: 1.5rem;
+        font-weight: 800;
+        line-height: 1.2;
+        background: linear-gradient(to right, var(--text-color) 30%, var(--accent-primary));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+
+      .course-subtitle {
+        font-size: 0.85rem;
+        color: var(--text-muted);
+        line-height: 1.4;
+      }
+
+      /* Stats Widget */
+      .stats-panel {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.75rem;
+      }
+
+      .stat-card {
+        background: var(--bg-card);
+        border: 1px solid var(--border-color);
+        border-radius: 12px;
+        padding: 0.75rem;
+        display: flex;
+        flex-direction: column;
+        gap: 0.25rem;
+      }
+
+      .stat-num {
+        font-family: var(--font-heading);
+        font-size: 1.15rem;
+        font-weight: 700;
+        color: var(--text-color);
+      }
+
+      .stat-label {
+        font-size: 0.7rem;
+        color: var(--text-muted);
+        text-transform: uppercase;
+        letter-spacing: 0.02em;
+      }
+
+      /* Interactive Search */
+      .search-box {
+        position: relative;
+        width: 100%;
+      }
+
+      .search-input {
+        width: 100%;
+        background: var(--bg-input);
+        border: 1px solid var(--border-color);
+        border-radius: 12px;
+        padding: 0.75rem 1rem 0.75rem 2.5rem;
+        font-size: 0.875rem;
+        color: var(--text-color);
+        transition: all var(--transition-speed) ease;
+      }
+
+      .search-input:focus {
+        border-color: var(--accent-primary);
+        box-shadow: 0 0 0 3px var(--accent-glow);
+        outline: none;
+      }
+
+      .search-icon {
+        position: absolute;
+        left: 0.85rem;
+        top: 50%;
+        transform: translateY(-50%);
+        color: var(--text-muted);
+        pointer-events: none;
+        width: 16px;
+        height: 16px;
+      }
+
+      /* Filter Navigation */
+      .filter-group {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+      }
+
+      .filter-title {
+        font-family: var(--font-heading);
+        font-size: 0.75rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        color: var(--text-muted);
+        letter-spacing: 0.05em;
+        margin-bottom: 0.25rem;
+      }
+
+      .filter-tabs {
+        display: flex;
+        flex-direction: column;
+        gap: 0.4rem;
+      }
+
+      .filter-tab {
+        width: 100%;
+        text-align: left;
+        padding: 0.6rem 0.85rem;
+        border-radius: 10px;
+        font-size: 0.825rem;
+        font-weight: 500;
+        color: var(--text-muted);
+        display: flex;
+        align-items: center;
+        gap: 0.6rem;
+        border: 1px solid transparent;
+        transition: all 0.2s ease;
+      }
+
+      .filter-tab::before {
+        content: '';
+        display: block;
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: currentColor;
+        flex-shrink: 0;
+      }
+
+      .filter-tab:hover {
+        background: var(--bg-card-hover);
+        color: var(--text-color);
+      }
+
+      .filter-tab.active {
+        background: var(--bg-card-hover);
+        border-color: var(--border-color);
+        color: var(--text-color);
+        box-shadow: var(--shadow-sm);
+        font-weight: 600;
+      }
+
+      /* Color Mappings for filters */
+      .filter-tab[data-module="all"] { color: var(--text-color); }
+      .filter-tab[data-module="1"] { color: var(--color-m1); }
+      .filter-tab[data-module="2"] { color: var(--color-m2); }
+      .filter-tab[data-module="3"] { color: var(--color-m3); }
+      .filter-tab[data-module="4"] { color: var(--color-m4); }
+      .filter-tab[data-module="5"] { color: var(--color-m5); }
+      .filter-tab[data-module="6"] { color: var(--color-m6); }
+      .filter-tab[data-module="7"] { color: var(--color-m7); }
+
+      /* Control Buttons */
+      .btn-container {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        margin-top: auto;
+      }
+
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        padding: 0.75rem 1rem;
+        border-radius: 12px;
+        font-size: 0.875rem;
+        font-weight: 600;
+        transition: all var(--transition-speed) ease;
+        border: 1px solid var(--border-color);
+      }
+
+      .btn-primary {
+        background: var(--accent-primary);
+        color: var(--text-inverse);
+        border: none;
+      }
+
+      .btn-primary:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px var(--accent-glow);
+      }
+
+      .btn-secondary {
+        background: var(--bg-card);
+        color: var(--text-color);
+      }
+
+      .btn-secondary:hover {
+        background: var(--bg-card-hover);
+        border-color: var(--border-hover);
+      }
+
+      /* Theme Switch Button */
+      .theme-toggle-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 0.8rem;
+        color: var(--text-muted);
+        border-top: 1px solid var(--border-color);
+        padding-top: 1rem;
+        margin-top: 1rem;
+      }
+
+      .theme-btn-group {
+        display: inline-flex;
+        background: var(--bg-input);
+        border: 1px solid var(--border-color);
+        border-radius: 9999px;
+        padding: 2px;
+      }
+
+      .theme-btn {
+        padding: 4px 10px;
+        font-size: 0.75rem;
+        font-weight: 600;
+        border-radius: 9999px;
+        color: var(--text-muted);
+        transition: all 0.2s ease;
+      }
+
+      .theme-btn.active {
+        background: var(--accent-primary);
+        color: var(--text-inverse);
+      }
+
+      /* Top Navbar Area for Main Content */
+      .top-navbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 1.5rem;
+        flex-wrap: wrap;
+      }
+
+      .section-heading-container {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .section-title {
+        font-family: var(--font-heading);
+        font-size: 1.75rem;
+        font-weight: 800;
+        color: var(--text-color);
+      }
+
+      .section-desc {
+        font-size: 0.875rem;
+        color: var(--text-muted);
+      }
+
+      /* Calendar Month Card */
+      .month-card {
+        background: var(--bg-card);
+        backdrop-filter: var(--glass-blur);
+        -webkit-backdrop-filter: var(--glass-blur);
+        border: 1px solid var(--border-color);
+        border-radius: 20px;
+        padding: 1.25rem;
+        box-shadow: var(--shadow-sm);
+        transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), 
+                    border-color 0.3s ease, 
+                    box-shadow 0.3s ease;
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .month-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 4px;
+        background: var(--border-color);
+        transition: background 0.3s ease;
+      }
+
+      .month-card:hover {
+        transform: translateY(-4px);
+        border-color: var(--border-hover);
+        box-shadow: var(--shadow-md);
+      }
+
+      .month-card.active-module::before {
+        background: var(--module-color-gradient, var(--accent-primary));
+      }
+
+      .month-card.dimmed {
+        opacity: 0.25;
+        pointer-events: none;
+      }
+
+      .month-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .month-name {
+        font-family: var(--font-heading);
+        font-size: 1.15rem;
+        font-weight: 700;
+        text-transform: capitalize;
+        color: var(--text-color);
+      }
+
+      .month-year {
+        font-size: 0.75rem;
+        color: var(--text-muted);
+        font-weight: 600;
+      }
+
+      /* Calendar Layout Cells */
+      .weekday-header {
+        display: grid;
+        grid-template-columns: repeat(7, 1fr);
+        text-align: center;
+        font-size: 0.62rem;
+        letter-spacing: -0.01em;
+        font-weight: 700;
+        color: var(--text-muted);
+        text-transform: uppercase;
+        white-space: nowrap;
+        border-bottom: 1px solid var(--border-color);
+        padding-bottom: 0.35rem;
+      }
+
+      .days-grid {
+        display: grid;
+        grid-template-columns: repeat(7, 1fr);
+        grid-auto-rows: minmax(32px, 1fr);
+        gap: 3px;
+        text-align: center;
+      }
+
+      .day-cell {
+        font-size: 0.8rem;
+        font-weight: 500;
+        color: var(--text-muted);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 8px;
+        position: relative;
+        transition: all 0.2s ease;
+        user-select: none;
+      }
+
+      .day-cell.current-month {
+        color: var(--text-color);
+      }
+
+      /* Event Highlight Styles */
+      .day-cell.has-event {
+        cursor: pointer;
+        font-weight: 700;
+        box-shadow: 0 0 0 1px var(--event-color);
+        background: rgba(var(--event-color-rgb), 0.08);
+        color: var(--text-color);
+      }
+
+      .day-cell.has-event:hover {
+        background: rgba(var(--event-color-rgb), 0.18);
+        transform: scale(1.12);
+        z-index: 2;
+      }
+
+      .day-cell.has-event.selected {
+        background: var(--event-color) !important;
+        color: var(--text-inverse) !important;
+        box-shadow: 0 4px 10px rgba(var(--event-color-rgb), 0.4);
+      }
+
+      .day-cell.has-event.dimmed {
+        opacity: 0.15;
+        box-shadow: none;
+        background: transparent;
+      }
+
+      /* Event Type markers */
+      .event-dot {
+        position: absolute;
+        bottom: 4px;
+        width: 4px;
+        height: 4px;
+        border-radius: 50%;
+        background: var(--event-color);
+      }
+      
+      .day-cell.selected .event-dot {
+        background: var(--text-inverse);
+      }
+
+      .day-cell.holiday {
+        background: repeating-linear-gradient(-45deg, rgba(239, 68, 68, 0.08), rgba(239, 68, 68, 0.08) 4px, transparent 4px, transparent 8px);
+        box-shadow: 0 0 0 1px rgba(239, 68, 68, 0.45);
+        color: var(--holiday-color, #f87171);
+        font-weight: 700;
+      }
+
+      .day-cell.holiday:hover {
+        background: rgba(239, 68, 68, 0.1);
+      }
+
+      /* Spotlight Banner */
+      .spotlight-banner {
+        background: linear-gradient(135deg, rgba(var(--color-m5-rgb), 0.15) 0%, rgba(var(--color-m2-rgb), 0.1) 100%);
+        border: 1px solid rgba(var(--color-m5-rgb), 0.25);
+        border-radius: 20px;
+        padding: 1.25rem 1.75rem;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1.5rem;
+        box-shadow: var(--shadow-glow);
+        margin-bottom: 0.5rem;
+      }
+
+      .spotlight-info {
+        display: flex;
+        flex-direction: column;
+        gap: 0.25rem;
+      }
+
+      .spotlight-tag {
+        font-family: var(--font-heading);
+        font-size: 0.7rem;
+        font-weight: 700;
+        color: var(--color-m5);
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+      }
+
+      .spotlight-title {
+        font-family: var(--font-heading);
+        font-size: 1.1rem;
+        font-weight: 700;
+        color: var(--text-color);
+      }
+
+      .spotlight-date {
+        font-size: 0.8rem;
+        color: var(--text-muted);
+      }
+
+      /* Details Drawer Styling */
+      .drawer-header {
+        padding: 1.5rem;
+        border-bottom: 1px solid var(--border-color);
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+      }
+
+      .drawer-close {
+        color: var(--text-muted);
+        padding: 0.5rem;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.2s ease;
+      }
+
+      .drawer-close:hover {
+        background: var(--border-color);
+        color: var(--text-color);
+      }
+
+      .drawer-body {
+        padding: 1.5rem;
+        overflow-y: auto;
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+      }
+
+      .drawer-section-title {
+        font-family: var(--font-heading);
+        font-size: 0.75rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        color: var(--text-muted);
+        letter-spacing: 0.05em;
+        margin-bottom: 0.5rem;
+      }
+
+      .drawer-date {
+        font-family: var(--font-heading);
+        font-size: 1.25rem;
+        font-weight: 700;
+        color: var(--text-color);
+      }
+
+      .badge-row {
+        display: flex;
+        gap: 0.5rem;
+        flex-wrap: wrap;
+      }
+
+      .badge {
+        font-size: 0.725rem;
+        font-weight: 600;
+        padding: 0.25rem 0.6rem;
+        border-radius: 6px;
+        background: var(--bg-card-hover);
+        color: var(--text-color);
+        border: 1px solid var(--border-color);
+      }
+
+      .badge-module {
+        background: var(--module-bg);
+        color: var(--module-color);
+        border-color: rgba(var(--module-color-rgb), 0.3);
+      }
+
+      .class-title {
+        font-family: var(--font-heading);
+        font-size: 1.35rem;
+        font-weight: 800;
+        line-height: 1.3;
+        color: var(--text-color);
+      }
+
+      .class-desc {
+        font-size: 0.9rem;
+        line-height: 1.6;
+        color: var(--text-muted);
+      }
+
+      /* Professor List Card */
+      .professor-item {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        padding: 0.5rem 0;
+      }
+
+      .professor-avatar {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, var(--accent-primary) 0%, rgba(79, 70, 229, 0.6) 100%);
+        color: var(--text-inverse);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: var(--font-heading);
+        font-weight: 700;
+        font-size: 0.85rem;
+      }
+
+      .professor-name {
+        font-size: 0.875rem;
+        font-weight: 600;
+        color: var(--text-color);
+      }
+
+      .drawer-footer {
+        padding: 1.5rem;
+        border-top: 1px solid var(--border-color);
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+      }
+
+
+
+      /* Modal for displaying PDF images */
+      .modal {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background: rgba(0, 0, 0, 0.7);
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+        z-index: 1000;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        padding: 2rem;
+      }
+
+      .modal.open {
+        display: flex;
+      }
+
+      .modal-content {
+        background: var(--bg-card);
+        border: 1px solid var(--border-color);
+        border-radius: 20px;
+        padding: 1.5rem;
+        max-width: 800px;
+        width: 100%;
+        max-height: 90vh;
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        position: relative;
+      }
+
+      .modal-close {
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+        background: rgba(0, 0, 0, 0.5);
+        color: white;
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .modal-image-container {
+        overflow: auto;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .modal-img {
+        max-height: 70vh;
+        object-fit: contain;
+        border-radius: 8px;
+      }
+
+      /* Search highlight effect */
+      mark {
+        background: rgba(234, 179, 8, 0.3);
+        color: inherit;
+        border-radius: 2px;
+        padding: 0 2px;
+      }
+    }
+
+    @layer utilities {
+      .sr-only {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border: 0;
+      }
+
+      .text-center { text-align: center; }
+      .mt-auto { margin-top: auto; }
+      .w-full { width: 100%; }
+      .flex { display: flex; }
+      .gap-2 { gap: 0.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="app-wrapper">
+    
+    <!-- SIDEBAR COLUMN -->
+    <aside class="sidebar">
+      
+      <!-- Course Branding Header -->
+      <div class="course-header">
+        <!-- Institutional Logos Container -->
+        <div class="brand-logos-container" style="display: flex; justify-content: center; align-items: center; background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px); border-radius: 12px; padding: 0.5rem; margin-bottom: 0.5rem; border: 1px solid rgba(255, 255, 255, 0.3); box-shadow: var(--shadow-sm);">
+          <img src="assets/images/logos.png" alt="Logos UERJ e NEEI" style="max-height: 44px; max-width: 100%; object-fit: contain;">
+        </div>
+        <span class="course-badge">Calendário Interativo</span>
+        <h1 class="course-title">Curso de Extensão NEEI/UERJ 2026</h1>
+        <p class="course-subtitle">Neurodiversidade, Síndromes Raras e o contexto da Educação Básica: Ciência, Tecnologia e Inclusão na perspectiva biopsicossocial.</p>
+      </div>
+
+      <!-- Quick Info Statistics -->
+      <div class="stats-panel">
+        <div class="stat-card">
+          <span class="stat-num">100 horas</span>
+          <span class="stat-label">Carga Horária</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-num">7 Módulos</span>
+          <span class="stat-label">Estrutura</span>
+        </div>
+        <div class="stat-card" style="grid-column: span 2;">
+          <span class="stat-num">Maio - Dezembro 2026</span>
+          <span class="stat-label">Duração do Curso</span>
+        </div>
+        <div class="stat-card" style="grid-column: span 2; gap: 0.5rem;">
+          <span class="stat-num" style="font-size: 0.95rem; line-height: 1.4; display: flex; flex-direction: column; gap: 4px;">
+            <span style="display: flex; align-items: center; gap: 4px;">🇧🇷 BR: Quintas às 19:00</span>
+            <span style="display: flex; align-items: center; gap: 4px;">🇲🇿 MZ: Sextas às 00:00</span>
+          </span>
+          <span class="stat-label">Horários Síncronos</span>
+        </div>
+      </div>
+
+      <!-- Live Search Box -->
+      <div class="search-box">
+        <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.637 10.637z" />
+        </svg>
+        <input type="text" id="searchInput" class="search-input" placeholder="Pesquisar tema, prof ou aula..." aria-label="Pesquisar cronograma">
+      </div>
+
+      <!-- Navigation/Filter Tabs -->
+      <nav class="filter-group">
+        <h2 class="filter-title">Filtrar por Módulo</h2>
+        <div class="filter-tabs" id="moduleFilters">
+          <button class="filter-tab active" data-module="all">Todos os Módulos</button>
+          <button class="filter-tab" data-module="1">Módulo 1: Fundamentos (10 horas)</button>
+          <button class="filter-tab" data-module="2">Módulo 2: Desenvolvimento (15 horas)</button>
+          <button class="filter-tab" data-module="3">Módulo 3: Avaliação (17 horas)</button>
+          <button class="filter-tab" data-module="4">Módulo 4: Intervenção (12 horas)</button>
+          <button class="filter-tab" data-module="5">Módulo 5: Chatbot I.A.R.A. (20 horas)</button>
+          <button class="filter-tab" data-module="6">Módulo 6: PEI na Prática (20 horas)</button>
+          <button class="filter-tab" data-module="7">Módulo 7: Culminância (6 horas)</button>
+        </div>
+      </nav>
+
+      <!-- Central Classroom Button -->
+      <div class="sb-classroom" style="margin-top: auto; display: flex; flex-direction: column; gap: 0.5rem; border-top: 1px solid var(--border-color); padding-top: 1.25rem;">
+        <a href="https://classroom.google.com/c/ODY0NDUzNjc2OTI1" target="_blank" class="btn btn-primary" style="text-decoration: none; font-size: 0.85rem;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="flex-shrink:0;">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25" />
+          </svg>
+          Acessar Google Classroom
+        </a>
+      </div>
+
+      <!-- Research Group Footer Link -->
+      <div class="sb-partners" style="display: flex; flex-direction: column; gap: 0.5rem; font-size: 0.725rem; text-align: center; color: var(--text-muted); border-top: 1px solid var(--border-color); padding-top: 1rem;">
+        <span style="text-transform: uppercase; font-size: 0.65rem; font-weight: 700; letter-spacing: 0.05em;">Organização & Parceria</span>
+        <a href="https://www.uerj.br/" target="_blank" style="color: var(--accent-primary); text-decoration: none; font-weight: 600; display: inline-flex; align-items: center; justify-content: center; gap: 4px; transition: color var(--transition-speed) ease; line-height: 1.3;">
+          <span>UERJ — Universidade do Estado do Rio de Janeiro</span>
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="flex-shrink: 0;">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" />
+          </svg>
+        </a>
+        <a href="https://www.up.ac.mz/" target="_blank" style="color: var(--accent-primary); text-decoration: none; font-weight: 600; display: inline-flex; align-items: center; justify-content: center; gap: 4px; transition: color var(--transition-speed) ease; line-height: 1.3;">
+          <span>UP Maputo — Universidade Pedagógica de Maputo</span>
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="flex-shrink: 0;">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" />
+          </svg>
+        </a>
+        <a href="https://www.nucleoneei.org/" target="_blank" style="color: var(--accent-primary); text-decoration: none; font-weight: 600; display: inline-flex; align-items: center; justify-content: center; gap: 4px; transition: color var(--transition-speed) ease; line-height: 1.3;">
+          <span>NEEI — Núcleo de Educação Especial e Inclusiva</span>
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="flex-shrink: 0;">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" />
+          </svg>
+        </a>
+      </div>
+
+      <!-- Theme Selector -->
+      <div class="theme-toggle-container">
+        <span style="display: inline-flex; align-items: center; gap: 0.4rem;">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="flex-shrink: 0;">
+            <circle cx="12" cy="12" r="4" />
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32l1.41 1.41M2 12h2m16 0h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41" />
+          </svg>
+          Aparência
+        </span>
+        <div class="theme-btn-group">
+          <button class="theme-btn active" data-theme-val="system">Auto</button>
+          <button class="theme-btn" data-theme-val="dark">Escuro</button>
+          <button class="theme-btn" data-theme-val="light">Claro</button>
+        </div>
+      </div>
+
+    </aside>
+
+    <!-- MAIN CALENDAR DASHBOARD -->
+    <main class="main-content">
+      
+      <!-- Top navbar context banner -->
+      <header class="top-navbar">
+        <div class="section-heading-container">
+          <h2 class="section-title" id="sectionMainTitle">Cronograma do Curso</h2>
+          <p class="section-desc" id="sectionMainDesc">Clique em qualquer dia destacado no calendário para abrir os detalhes e links da aula síncrona.</p>
+        </div>
+      </header>
+
+      <!-- Dynamic Spotlight Area (Closest upcoming event) -->
+      <section class="spotlight-banner" id="spotlightBanner">
+        <div class="spotlight-info">
+          <span class="spotlight-tag" id="spotlightTag">Aula Mais Próxima</span>
+          <h3 class="spotlight-title" id="spotlightTitle">Aula Magna de Abertura</h3>
+          <p class="spotlight-date" id="spotlightDate">Quinta-feira, 28 de Maio de 2026 às 19:00</p>
+        </div>
+        <button class="btn btn-primary" id="spotlightActionBtn" style="padding: 0.5rem 1rem; font-size: 0.8rem;">Ver Detalhes</button>
+      </section>
+
+      <!-- Calendar cards grid container -->
+      <section class="calendar-section">
+        <div class="calendar-grid" id="calendarGridContainer">
+          <!-- Calendar months cards will be injected dynamically via JS -->
+        </div>
+      </section>
+
+    </main>
+
+  </div>
+
+  <!-- Scrim overlay behind the details drawer -->
+  <div class="drawer-overlay" id="drawerOverlay" tabindex="-1"></div>
+
+  <!-- INTERACTIVE CLASS DETAILS PANEL (DRAWER) -->
+  <aside class="details-drawer" id="detailsDrawer" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="detailTitle">
+    <div class="mobile-drag-handle"></div>
+    <div class="drawer-header">
+      <div class="flex-column" style="display:flex; flex-direction:column; gap:0.25rem;">
+        <span class="drawer-section-title">Informações da Aula</span>
+        <time class="drawer-date" id="detailDate">Quinta-feira, 11 de Junho de 2026</time>
+      </div>
+      <button class="drawer-close" id="closeDrawerBtn" aria-label="Fechar painel">
+        <svg width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
+    </div>
+    
+    <div class="drawer-body">
+      
+      <!-- Badges row -->
+      <div class="badge-row">
+        <span class="badge badge-module" id="detailModuleBadge">Módulo 1: Fundamentos</span>
+        <span class="badge" id="detailCHBadge">2h Síncronas</span>
+        <span class="badge" id="detailTimeBadge">19:00</span>
+      </div>
+
+      <!-- Class title -->
+      <h3 class="class-title" id="detailTitle">Alicerce Teórico e Legislação</h3>
+
+      <!-- Macro Theme information -->
+      <div>
+        <span class="drawer-section-title">Tema Macro</span>
+        <p class="class-desc" id="detailThemeMacro" style="font-weight:600; color: var(--text-color); margin-top: 0.25rem;">Fundamentos da Inclusão</p>
+      </div>
+
+      <!-- Main Description -->
+      <div>
+        <span class="drawer-section-title">Conteúdo Programático</span>
+        <div class="class-desc" id="detailDescription" style="margin-top: 0.25rem;">
+          Histórico e Legislação: Brasil e Moçambique. Começa com a Lei (o que é obrigatório).
+        </div>
+      </div>
+
+      <!-- Professor List -->
+      <div>
+        <span class="drawer-section-title">Docentes / Colaboradores</span>
+        <div id="detailProfessorsList" style="display:flex; flex-direction:column; gap:0.5rem; margin-top: 0.25rem;">
+          <!-- Injected dynamically -->
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Interactive Footer Actions -->
+    <div class="drawer-footer">
+      <button class="btn btn-primary" id="joinClassBtn">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M5.25 5.653c0-.856.917-1.398 1.667-.986l11.54 6.348a1.125 1.125 0 010 1.971l-11.54 6.347a1.125 1.125 0 01-1.667-.985V5.653z" />
+        </svg>
+        Entrar na Sala Virtual
+      </button>
+      <button class="btn btn-secondary" id="addToCalendarBtn">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5" />
+        </svg>
+        Adicionar ao Google Agenda
+      </button>
+      <button class="btn btn-secondary" id="downloadIcsBtn" style="font-size: 0.8rem; padding: 0.5rem;">
+        Baixar Convite (ICS)
+      </button>
+    </div>
+  </aside>
+
+
+
+
+
+  <!-- ----------------------------------------------------
+       JAVASCRIPT APPLICATION CORE
+       ---------------------------------------------------- -->
+  <script>
+    // 1. Structured Syllabus Data Model (2026 Schedule)
+    const COURSE_EVENTS = [
+      {
+        date: "2026-05-28",
+        title: "Abertura e Aula Magna",
+        module: 0,
+        moduleTitle: "Abertura",
+        theme: "Abertura Oficial",
+        description: "Aula Magna geral de abertura do curso de extensão com os Professores Coordenadores Edicléa e Adilson. Orientações iniciais e planejamento acadêmico geral.",
+        professors: ["Edicléa", "Adilson"],
+        time: "19:00",
+        ch: "2 horas Síncronas",
+        type: "special",
+        location: "Transmissão ao vivo pelo YouTube"
+      },
+      {
+        date: "2026-06-04",
+        title: "Pausa Acadêmica (Corpus Christi)",
+        module: 0,
+        moduleTitle: "Feriado",
+        theme: "Feriado Nacional",
+        description: "Sem atividades síncronas devido ao Feriado Nacional de Corpus Christi. Aproveite para colocar os estudos do Módulo 1 em dia.",
+        professors: [],
+        time: "-",
+        ch: "-",
+        type: "holiday",
+        location: "-"
+      },
+      // Módulo 1 (10h): "FUNDAMENTOS"
+      {
+        date: "2026-06-11",
+        title: "Alicerce Teórico",
+        module: 1,
+        moduleTitle: "Módulo 1: Fundamentos",
+        theme: "Fundamentos da Inclusão, Neurodiversidade e o alicerce teórico",
+        description: "<b>Histórico e Legislação: Brasil e Moçambique.</b><br>Foco em direitos fundamentais da pessoa neurodivergente, análise comparativa de leis brasileiras e moçambicanas, e entendimento do alicerce constitucional obrigatório da educação inclusiva.",
+        professors: ["Edicléa", "Adilson"],
+        time: "19:00",
+        ch: "2 horas Síncronas",
+        type: "class"
+      },
+      {
+        date: "2026-06-18",
+        title: "Neurodiversidade",
+        module: 1,
+        moduleTitle: "Módulo 1: Fundamentos",
+        theme: "Fundamentos da Inclusão, Neurodiversidade e o alicerce teórico",
+        description: "<b>O espectro e suas singularidades (TEA, TDAH, AH/SD).</b><br>Aborda a Identidade (quem é o aluno neurodivergente), eliminando mitos clínicos e fornecendo perspectivas teóricas modernas de conceituação do espectro biopsicossocial.",
+        professors: ["Sandra", "Beth"],
+        time: "19:00",
+        ch: "2 horas Síncronas",
+        type: "class"
+      },
+      {
+        date: "2026-06-25",
+        title: "Fundamentos da Inclusão",
+        module: 1,
+        moduleTitle: "Módulo 1: Fundamentos",
+        theme: "Fundamentos da Inclusão, Neurodiversidade e o alicerce teórico",
+        description: "<b>Doenças Raras e o impacto na escolarização.</b><br>Expansão do conceito de inclusão para a complexidade biológica e psicossocial (casos raros, prevalência e desafios no ambiente escolar prático).",
+        professors: ["Hélio"],
+        time: "19:00",
+        ch: "2 horas Síncronas",
+        type: "class"
+      },
+      // Módulo 2 (15h): "DESENVOLVIMENTO"
+      {
+        date: "2026-07-02",
+        title: "Desenvolvimento - Brasil",
+        module: 2,
+        moduleTitle: "Módulo 2: Desenvolvimento",
+        theme: "Educação Precoce e Desenvolvimento",
+        description: "<b>Marcos do Desenvolvimento Infantil no contexto do Brasil.</b><br>Identificação de atrasos e desenvolvimento cognitivo e motor típico e atípico sob as diretrizes educacionais e pediátricas brasileiras.",
+        professors: ["Cristina"],
+        time: "19:00",
+        ch: "2 horas Síncronas",
+        type: "class"
+      },
+      {
+        date: "2026-07-09",
+        title: "Desenvolvimento - Moçambique",
+        module: 2,
+        moduleTitle: "Módulo 2: Desenvolvimento",
+        theme: "Educação Precoce e Desenvolvimento",
+        description: "<b>Marcos do Desenvolvimento Infantil no contexto de Moçambique.</b><br>Perspectivas culturais locais do desenvolvimento na infância e organização dos sistemas de suporte à educação precoce em Moçambique.",
+        professors: ["Adilson"],
+        time: "19:00",
+        ch: "2 horas Síncronas",
+        type: "class"
+      },
+      {
+        date: "2026-07-16",
+        title: "Educação Precoce",
+        module: 2,
+        moduleTitle: "Módulo 2: Desenvolvimento",
+        theme: "Educação Precoce e Desenvolvimento",
+        description: "<b>Intervenção Precoce: práticas baseadas em evidências científicas.</b><br>Estratégias pedagógicas e terapêuticas para estímulo inicial no berçário e na pré-escola.",
+        professors: ["Paola", "Gisele"],
+        time: "19:00",
+        ch: "2 horas Síncronas",
+        type: "class"
+      },
+      {
+        date: "2026-07-23",
+        title: "Desenvolvimento Sistêmico",
+        module: 2,
+        moduleTitle: "Módulo 2: Desenvolvimento",
+        theme: "Educação Precoce e Desenvolvimento",
+        description: "<b>A Díade Família e Escola.</b><br>Modelos de cooperação ativa, comunicação não-violenta, superação de barreiras familiares e centralidade do aluno.",
+        professors: ["Lana", "Adilson"],
+        time: "19:00",
+        ch: "2 horas Síncronas",
+        type: "class"
+      },
+      {
+        date: "2026-07-30",
+        title: "Desenvolvimento Contextual",
+        module: 2,
+        moduleTitle: "Módulo 2: Desenvolvimento",
+        theme: "Educação Precoce e Desenvolvimento",
+        description: "<b>Cultura, Identidade e Inclusão.</b><br>Como aspectos contextuais, socioeconômicos e culturais definem o diagnóstico e a aceitação de crianças com transtornos de desenvolvimento.",
+        professors: ["Camila", "Adilson"],
+        time: "19:00",
+        ch: "2 horas Síncronas",
+        type: "class"
+      },
+      // Módulo 3 (18h): "AVALIAÇÃO BIOPSICOSSOCIAL"
+      {
+        date: "2026-08-06",
+        title: "A CIF (Modelo)",
+        module: 3,
+        moduleTitle: "Módulo 3: Avaliação",
+        theme: "A CIF como Ferramenta Pedagógica",
+        description: "<b>Introdução à CIF (2001) e CIF-CJ (2006).</b><br>O modelo conceitual de funcionalidade da Organização Mundial da Saúde (OMS) como substituto da visão puramente biomédica de deficiência.",
+        professors: ["Sandra", "Beth"],
+        time: "19:00",
+        ch: "2 horas Síncronas",
+        type: "class"
+      },
+      {
+        date: "2026-08-13",
+        title: "Ferramenta (Taxonomia)",
+        module: 3,
+        moduleTitle: "Módulo 3: Avaliação",
+        theme: "A CIF como Ferramenta Pedagógica",
+        description: "<b>Navegando nos Códigos da CIF-CJ.</b><br>Exercício prático de taxonomia: Funções do corpo (b), Estruturas (s), Atividade/Participação (d) e Fatores Ambientais (e).",
+        professors: ["Sandra", "Beth"],
+        time: "19:00",
+        ch: "2 horas Síncronas",
+        type: "class"
+      },
+      {
+        date: "2026-08-20",
+        title: "Oficina de Codificação CIF - Parte 1",
+        module: 3,
+        moduleTitle: "Módulo 3: Avaliação",
+        theme: "A CIF como Ferramenta Pedagógica",
+        description: "<b>Oficina de Codificação Prática.</b><br>Exercícios práticos dirigidos de 'tradução' de relatórios clínicos para a linguagem de códigos universais CIF. Parte 1.",
+        professors: ["Sandra", "Beth"],
+        time: "19:00",
+        ch: "2 horas Síncronas",
+        type: "class"
+      },
+      {
+        date: "2026-08-27",
+        title: "Oficina de Codificação CIF - Parte 2",
+        module: 3,
+        moduleTitle: "Módulo 3: Avaliação",
+        theme: "A CIF como Ferramenta Pedagógica",
+        description: "<b>Estudos de Caso em Linguagem CIF.</b><br>Estudo de laudos clínicos complexos, aplicação de qualificadores e consolidação da matriz de funcionalidade. Parte 2.",
+        professors: ["Sandra", "Beth"],
+        time: "19:00",
+        ch: "2 horas Síncronas",
+        type: "class"
+      },
+      // Módulo 4 (12h): "INTERVENÇÃO"
+      {
+        date: "2026-09-03",
+        title: "Tecnologia Assistiva",
+        module: 4,
+        moduleTitle: "Módulo 4: Intervenção",
+        theme: "Tecnologia Assistiva (TA) e Acessibilidade",
+        description: "<b>TA e Recursos Pedagógicos de Baixo Custo.</b><br>Mapeamento de tecnologias de acessibilidade, adaptações físicas e metodológicas de baixo custo para aplicação em escolas públicas.",
+        professors: ["Edna", "Jucélia"],
+        time: "19:00",
+        ch: "2 horas Síncronas",
+        type: "class"
+      },
+      {
+        date: "2026-09-10",
+        title: "A Comunicação Alternativa",
+        module: 4,
+        moduleTitle: "Módulo 4: Intervenção",
+        theme: "Tecnologia Assistiva (TA) e Acessibilidade",
+        description: "<b>Comunicação Aumentativa e Alternativa (CAA).</b><br>Construção de pranchas de comunicação física e digital, vocalizadores e metodologias para alunos sem fala funcional ou não verbais.",
+        professors: ["Edna", "Jucélia"],
+        time: "19:00",
+        ch: "2 horas Síncronas",
+        type: "class"
+      },
+      {
+        date: "2026-09-17",
+        title: "Acessibilidade e DUA",
+        module: 4,
+        moduleTitle: "Módulo 4: Intervenção",
+        theme: "Tecnologia Assistiva (TA) e Acessibilidade",
+        description: "<b>Desenho Universal para Aprendizagem (DUA).</b><br>Os 3 pilares do DUA (Múltiplos meios de Engajamento, Representação e Ação/Expressão) na formulação de aulas inclusivas nativas.",
+        professors: ["Edna", "Jucélia"],
+        time: "19:00",
+        ch: "2 horas Síncronas",
+        type: "class"
+      },
+      // Módulo 5 (20h): "FRONTEIRA TECNOLÓGICA"
+      {
+        date: "2026-09-24",
+        title: "Inteligência Artificial",
+        module: 5,
+        moduleTitle: "Módulo 5: Chatbot I.A.R.A.",
+        theme: "Inteligência Artificial e Inovação",
+        description: "<b>IA na Educação: Oportunidades e Desafios.</b><br>Introdução às tecnologias generativas, impacto na docência e personalização da aprendizagem na perspectiva biopsicossocial.",
+        professors: ["Krysamon"],
+        time: "19:00",
+        ch: "2 horas Síncronas",
+        type: "class"
+      },
+      {
+        date: "2026-10-01",
+        title: "Apresentando a I.A.R.A.",
+        module: 5,
+        moduleTitle: "Módulo 5: Chatbot I.A.R.A.",
+        theme: "Inteligência Artificial e Inovação",
+        description: "<b>O que é a I.A.R.A. (Inteligência Artificial para Raras Assistência)?</b><br><b>Objetivo:</b> Assistência informacional rápida para profissionais e famílias.<br><b>Treinamento:</b> Análise da base de dados (Raras e Neurodiversidade).<br><b>Ética:</b> Privacidade e papel de supervisão humana.",
+        professors: ["Krysamon", "Cristina"],
+        time: "19:00",
+        ch: "2 horas Síncronas",
+        type: "class"
+      },
+      {
+        date: "2026-10-08",
+        title: "Inovação (Workshop Prático) - Parte 1",
+        module: 5,
+        moduleTitle: "Módulo 5: Chatbot I.A.R.A.",
+        theme: "Inteligência Artificial e Inovação",
+        description: "<b>Workshop Prático IARA (Parte 1).</b><br><b>Prompting Avançado:</b> Como formular perguntas inteligentes para estruturar planos de adaptação baseados no contexto do aluno.<br><b>Simulações Clínico-Pedagógicas:</b> Manejo de crises de alunos no dia a dia em sala.",
+        professors: ["Krysamon", "Cristina"],
+        time: "19:00",
+        ch: "2 horas Síncronas",
+        type: "class"
+      },
+      {
+        date: "2026-10-15",
+        title: "Inovação (Workshop Prático) - Parte 2",
+        module: 5,
+        moduleTitle: "Módulo 5: Chatbot I.A.R.A.",
+        theme: "Inteligência Artificial e Inovação",
+        description: "<b>Modelagem de Intervenção com IA.</b><br>Trabalho ativo com IARA. Pesquisas dirigidas de prevalências de síndromes e extração de guias práticos de acessibilidade na sala de aula. Parte 2.",
+        professors: ["Krysamon", "Cristina"],
+        time: "19:00",
+        ch: "2 horas Síncronas",
+        type: "class"
+      },
+      {
+        date: "2026-10-22",
+        title: "Oficina Pedagógica do Módulo IARA",
+        module: 5,
+        moduleTitle: "Módulo 5: Chatbot I.A.R.A.",
+        theme: "Inteligência Artificial e Inovação",
+        description: "<b>Oficina Pedagógica Avaliativa.</b><br>Desenvolvimento guiado de planos de lição adaptados gerados de forma cooperativa entre professores humanos e a assistente virtual IARA.",
+        professors: ["Krysamon", "Cristina"],
+        time: "19:00",
+        ch: "2 horas Síncronas",
+        type: "class"
+      },
+      {
+        date: "2026-10-29",
+        title: "Atividade Prática Avaliativa IARA",
+        module: 5,
+        moduleTitle: "Módulo 5: Chatbot I.A.R.A.",
+        theme: "Inteligência Artificial e Inovação",
+        description: "<b>Exercício Prático Final do Módulo.</b><br><b>Atividade:</b> O aluno receberá uma doença rara pouco conhecida e deverá:<br>1. Consultar a IARA sobre suas características clínicas e de funcionalidade.<br>2. Extrair sugestões de adaptação curricular e física escolar.<br>3. Fazer análise crítica das respostas da IA cruzando com a CIF.",
+        professors: ["Krysamon", "Cristina"],
+        time: "19:00",
+        ch: "2 horas Síncronas",
+        type: "class"
+      },
+      // Módulo 6 (20h): "GRANDE SÍNTESE"
+      {
+        date: "2026-11-05",
+        title: "Base Legal e Estrutura do PEI",
+        module: 6,
+        moduleTitle: "Módulo 6: PEI na Prática",
+        theme: "O PEI Biopsicossocial na Prática",
+        description: "<b>Legislação Atual e Estrutura do PEI (Plano de Ensino Individualizado).</b><br>Diferenças normativas e operacionais na formatação do PEI entre as realidades do Brasil e de Moçambique.",
+        professors: ["Gisele", "Adilson"],
+        time: "19:00",
+        ch: "2 horas Síncronas",
+        type: "class"
+      },
+      {
+        date: "2026-11-12",
+        title: "Ferramenta Biopsicossocial no PEI",
+        module: 6,
+        moduleTitle: "Módulo 6: PEI na Prática",
+        theme: "O PEI Biopsicossocial na Prática",
+        description: "<b>Uso prático de laudos no PEI.</b><br>Como estruturar a avaliação do PEI a partir da perspectiva biopsicossocial da CIF, transformando códigos em metas escolares realizáveis.",
+        professors: ["Paola", "Camila"],
+        time: "19:00",
+        ch: "2 horas Síncronas",
+        type: "class"
+      },
+      {
+        date: "2026-11-19",
+        title: "IARA e PEI",
+        module: 6,
+        moduleTitle: "Módulo 6: PEI na Prática",
+        theme: "O PEI Biopsicossocial na Prática",
+        description: "<b>IA como suporte ao PEI.</b><br>Uso prático do Chatbot IARA para aceleração e redação de metas pedagógicas adaptadas integradas ao modelo oficial do PEI.",
+        professors: ["Cristina"],
+        time: "19:00",
+        ch: "2 horas Síncronas",
+        type: "class"
+      },
+      {
+        date: "2026-11-26",
+        title: "Estudo de Caso Dirigido",
+        module: 6,
+        moduleTitle: "Módulo 6: PEI na Prática",
+        theme: "O PEI Biopsicossocial na Prática",
+        description: "<b>Estudo de Caso Integrador do PEI.</b><br>Construção prática final de um plano de ensino individualizado completo: Passos de diagnóstico inicial, eixos de intervenção, revisão de metas e consolidação final.",
+        professors: ["Camila", "Paola", "Gisele"],
+        time: "19:00",
+        ch: "4 horas Síncronas", // Consolidated class time 2h + 2h in PDF
+        type: "class"
+      },
+      // Módulo 7 (6h): "CULMINÂNCIA"
+      {
+        date: "2026-12-03",
+        title: "Simpósio de Encerramento (Híbrido)",
+        module: 7,
+        moduleTitle: "Módulo 7: Culminância",
+        theme: "Simpósio Geral de Fechamento",
+        description: "<b>Atividades Finais de Formatura do Curso:</b><br>1. <b>Mesa Redonda</b>: Diálogo com pesquisadores do Brasil e Moçambique e associação de famílias atípicas.<br>2. <b>Socialização de Projetos</b>: Mostra de Trabalhos finais construídos pelos alunos.<br>3. <b>Encerramento Oficial</b> e entrega de Certificados.",
+        professors: ["Todos"],
+        time: "19:00",
+        ch: "6 horas Síncronas",
+        type: "special",
+        location: "YouTube / Híbrido Presencial"
+      }
+    ];
+
+    // Professors Full Names and Lattes Links Database
+    const PROFESSORS_DB = {
+      "Edicléa": {
+        fullName: "Edicléa Mascarenhas Fernandes",
+        lattes: "http://lattes.cnpq.br/4769008821320295"
+      },
+      "Adilson": {
+        fullName: "Adilson Valdano Muthambe",
+        lattes: "http://lattes.cnpq.br/3985022771439752"
+      },
+      "Sandra": {
+        fullName: "Sandra Regina Barbosa",
+        lattes: "http://lattes.cnpq.br/5824536251619175"
+      },
+      "Beth": {
+        fullName: "Elizabeth Rodrigues de Oliveira Pereira",
+        lattes: "http://lattes.cnpq.br/0378223568451987"
+      },
+      "Hélio": {
+        fullName: "Helio Ferreira Orrico",
+        lattes: "http://lattes.cnpq.br/3726179290502463"
+      },
+      "Cristina": {
+        fullName: "Maria Cristina Tavares de Moraes Danelon",
+        lattes: "http://lattes.cnpq.br/6848363478552360"
+      },
+      "Paola": {
+        fullName: "Paola Roberta Cantalejo Andrade",
+        lattes: "http://lattes.cnpq.br/2141741305220112"
+      },
+      "Gisele": {
+        fullName: "Gisele Guerra Lopes Gaspar",
+        lattes: "https://lattes.cnpq.br/2252197221623141"
+      },
+      "Lana": {
+        fullName: "Lana Mara Couto Oliveira Fontes",
+        lattes: "http://lattes.cnpq.br/5470593284615607"
+      },
+      "Camila": {
+        fullName: "Camila Balbino de Martins Sanches",
+        lattes: "http://lattes.cnpq.br/1167381495960033"
+      },
+      "Edna": {
+        fullName: "Edna Maria de Jesus",
+        lattes: "http://lattes.cnpq.br/2527154939418859"
+      },
+      "Jucélia": {
+        fullName: "Jucélia Linhares Granemann",
+        lattes: "http://lattes.cnpq.br/6325691838659744"
+      },
+      "Krysamon": {
+        fullName: "Krysamon Cavalcante",
+        lattes: "https://lattes.cnpq.br/5084695314809486"
+      },
+      "Todos": {
+        fullName: "Equipe de Professores Colaboradores",
+        lattes: null
+      }
+    };
+
+    // Module Details for rendering summaries when filtered
+    const MODULE_INFOS = {
+      "all": {
+        title: "Curso de Extensão NEEI/UERJ 2026",
+        desc: "Calendário interativo unificado dos 7 módulos letivos. Navegue pelas aulas e planeje suas quintas-feiras.",
+        duration: "100 horas totais",
+        classes: "26 atividades"
+      },
+      "1": {
+        title: "Módulo 1: Fundamentos",
+        desc: "Fundamentos da Inclusão, Neurodiversidade e o alicerce teórico. Histórico, legislação e conceitos essenciais.",
+        duration: "10 horas (6 horas Síncronas + 4 horas Assíncronas)",
+        classes: "3 aulas síncronas"
+      },
+      "2": {
+        title: "Módulo 2: Desenvolvimento",
+        desc: "Educação Precoce e Desenvolvimento Infantil comparado de Brasil e Moçambique. Contexto escolar e a díade família.",
+        duration: "15 horas (10 horas Síncronas + 5 horas Assíncronas)",
+        classes: "5 aulas síncronas"
+      },
+      "3": {
+        title: "Módulo 3: Avaliação Biopsicossocial",
+        desc: "A Classificação Internacional de Funcionalidade (CIF-CJ) da OMS como uma ferramenta diagnóstica pedagógica na prática.",
+        duration: "17 horas (8 horas Síncronas + 9 horas Assíncronas)",
+        classes: "4 aulas síncronas"
+      },
+      "4": {
+        title: "Módulo 4: Intervenção",
+        desc: "Mapeamento de Tecnologia Assistiva (TA), Comunicação Alternativa e Desenho Universal para Aprendizagem (DUA).",
+        duration: "12 horas (6 horas Síncronas + 6 horas Assíncronas)",
+        classes: "3 aulas síncronas"
+      },
+      "5": {
+        title: "Módulo 5: Chatbot I.A.R.A.",
+        desc: "Inteligência Artificial e Inovação na Educação. Formação teórica e prática cooperativa no uso da chatbot I.A.R.A.",
+        duration: "20 horas (12 horas Síncronas + 8 horas Assíncronas)",
+        classes: "6 aulas síncronas"
+      },
+      "6": {
+        title: "Módulo 6: PEI na Prática",
+        desc: "A elaboração científica do PEI (Plano de Ensino Individualizado) a partir da perspectiva biopsicossocial do aluno.",
+        duration: "20 horas (10 horas Síncronas + 10 horas Assíncronas)",
+        classes: "4 aulas síncronas"
+      },
+      "7": {
+        title: "Módulo 7: Culminância",
+        desc: "Simpósio Geral híbrido de Socialização de Projetos finais, mesas-redondas com pesquisadores e formatura geral.",
+        duration: "6 horas Síncronas",
+        classes: "1 Encontro Final"
+      }
+    };
+
+    // 2. State Variables
+    let currentFilter = "all";
+    let searchQuery = "";
+    let selectedEventDate = null;
+
+    // DOM Selection Cache
+    const calendarGridContainer = document.getElementById("calendarGridContainer");
+    const moduleFilters = document.getElementById("moduleFilters");
+    const searchInput = document.getElementById("searchInput");
+    const detailsDrawer = document.getElementById("detailsDrawer");
+    const drawerOverlay = document.getElementById("drawerOverlay");
+    const closeDrawerBtn = document.getElementById("closeDrawerBtn");
+    let lastFocusedBeforeDrawer = null;
+    
+    // Details Fields
+    const detailDate = document.getElementById("detailDate");
+    const detailTitle = document.getElementById("detailTitle");
+    const detailModuleBadge = document.getElementById("detailModuleBadge");
+    const detailCHBadge = document.getElementById("detailCHBadge");
+    const detailTimeBadge = document.getElementById("detailTimeBadge");
+    const detailThemeMacro = document.getElementById("detailThemeMacro");
+    const detailDescription = document.getElementById("detailDescription");
+    const detailProfessorsList = document.getElementById("detailProfessorsList");
+    const addToCalendarBtn = document.getElementById("addToCalendarBtn");
+    const downloadIcsBtn = document.getElementById("downloadIcsBtn");
+    const joinClassBtn = document.getElementById("joinClassBtn");
+    
+    // Text Labels on Headers
+    const sectionMainTitle = document.getElementById("sectionMainTitle");
+    const sectionMainDesc = document.getElementById("sectionMainDesc");
+
+    // Spotlight Elements
+    const spotlightBanner = document.getElementById("spotlightBanner");
+    const spotlightTitle = document.getElementById("spotlightTitle");
+    const spotlightDate = document.getElementById("spotlightDate");
+    const spotlightTag = document.getElementById("spotlightTag");
+    const spotlightActionBtn = document.getElementById("spotlightActionBtn");
+
+
+
+    // 3. Calendar Math Helpers
+    const MONTH_NAMES = ["janeiro", "fevereiro", "março", "abril", "maio", "junho", "julho", "agosto", "setembro", "outubro", "novembro", "dezembro"];
+    
+    // 4. Initial Launch
+    window.addEventListener("DOMContentLoaded", () => {
+      initApp();
+      setupSpotlight();
+    });
+
+    function initApp() {
+      // 1. Theme Auto Detect & Apply
+      const savedTheme = localStorage.getItem("preferred-theme") || "dark";
+      applyTheme(savedTheme);
+
+      // Highlight the correct theme button on load
+      document.querySelectorAll(".theme-btn").forEach(btn => {
+        if (btn.getAttribute("data-theme-val") === savedTheme) {
+          btn.classList.add("active");
+        } else {
+          btn.classList.remove("active");
+        }
+      });
+
+      // 2. Render all months of 2026
+      renderDashboard();
+
+      // 3. Setup Listeners
+      setupListeners();
+    }
+
+    // Dynamic Calendar Grid Generator
+    function renderDashboard() {
+      calendarGridContainer.innerHTML = "";
+      
+      // We render months from May to December of 2026
+      const year = 2026;
+      const months = [4, 5, 6, 7, 8, 9, 10, 11]; // May is 4, Dec is 11 in JS Date 0-indexing
+      
+      months.forEach(monthIdx => {
+        const monthCard = createMonthCard(year, monthIdx);
+        calendarGridContainer.appendChild(monthCard);
+      });
+    }
+
+    function createMonthCard(year, monthIdx) {
+      const monthCard = document.createElement("div");
+      monthCard.className = "month-card";
+      
+      // Calculate first day of month and number of days
+      const firstDay = new Date(year, monthIdx, 1).getDay(); // Sunday=0, Monday=1, ...
+      const numDays = new Date(year, monthIdx + 1, 0).getDate();
+      
+      // Find events in this month
+      const monthEvents = COURSE_EVENTS.filter(evt => {
+        const d = new Date(evt.date + "T00:00:00");
+        return d.getFullYear() === year && d.getMonth() === monthIdx;
+      });
+
+      // Filter events based on active filters and search queries
+      const activeFilteredEvents = monthEvents.filter(evt => {
+        const matchesFilter = (currentFilter === "all" || evt.module.toString() === currentFilter);
+        
+        let matchesSearch = true;
+        if (searchQuery.trim() !== "") {
+          const query = searchQuery.toLowerCase();
+          const matchesTitle = evt.title.toLowerCase().includes(query);
+          const matchesTheme = evt.theme.toLowerCase().includes(query);
+          const matchesDesc = evt.description.toLowerCase().includes(query);
+          const matchesProfs = evt.professors.some(p => p.toLowerCase().includes(query));
+          matchesSearch = (matchesTitle || matchesTheme || matchesDesc || matchesProfs);
+        }
+        
+        return matchesFilter && matchesSearch;
+      });
+
+      // Card Header
+      const header = document.createElement("div");
+      header.className = "month-header";
+      header.innerHTML = `
+        <h3 class="month-name">${MONTH_NAMES[monthIdx]}</h3>
+        <span class="month-year">${year}</span>
+      `;
+      monthCard.appendChild(header);
+
+      // We have active filtered events, style top border of month with the module color
+      if (activeFilteredEvents.length > 0) {
+        monthCard.classList.add("active-module");
+        // Use color of first active event
+        const primaryModule = activeFilteredEvents[0].module;
+        monthCard.style.setProperty("--module-color-gradient", `var(--color-m${primaryModule})`);
+      }
+
+      // If a specific filter is set and this card has zero matching events, dim it out
+      if (currentFilter !== "all" && activeFilteredEvents.length === 0) {
+        monthCard.classList.add("dimmed");
+      }
+
+      // Weekdays Headers: Dom Seg Ter Qua Qui Sex Sáb
+      const weekdays = document.createElement("div");
+      weekdays.className = "weekday-header";
+      ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"].forEach(day => {
+        const daySpan = document.createElement("span");
+        daySpan.textContent = day;
+        weekdays.appendChild(daySpan);
+      });
+      monthCard.appendChild(weekdays);
+
+      // Days Grid
+      const daysGrid = document.createElement("div");
+      daysGrid.className = "days-grid";
+      
+      // Empty offset cells
+      for (let i = 0; i < firstDay; i++) {
+        const emptyCell = document.createElement("div");
+        emptyCell.className = "day-cell";
+        daysGrid.appendChild(emptyCell);
+      }
+
+      // Calendar Days
+      for (let day = 1; day <= numDays; day++) {
+        const dayCell = document.createElement("div");
+        dayCell.className = "day-cell current-month";
+        dayCell.textContent = day;
+        
+        // Format current cell date as YYYY-MM-DD
+        const formattedMonth = (monthIdx + 1).toString().padStart(2, "0");
+        const formattedDay = day.toString().padStart(2, "0");
+        const cellDateString = `${year}-${formattedMonth}-${formattedDay}`;
+        
+        // Find if this specific day has an event
+        const dayEvent = COURSE_EVENTS.find(evt => evt.date === cellDateString);
+        
+        if (dayEvent) {
+          // Is it filtered out?
+          const matchesFilter = (currentFilter === "all" || dayEvent.module.toString() === currentFilter);
+          
+          let matchesSearch = true;
+          if (searchQuery.trim() !== "") {
+            const query = searchQuery.toLowerCase();
+            const matchesTitle = dayEvent.title.toLowerCase().includes(query);
+            const matchesTheme = dayEvent.theme.toLowerCase().includes(query);
+            const matchesDesc = dayEvent.description.toLowerCase().includes(query);
+            const matchesProfs = dayEvent.professors.some(p => p.toLowerCase().includes(query));
+            matchesSearch = (matchesTitle || matchesTheme || matchesDesc || matchesProfs);
+          }
+
+          if (matchesFilter && matchesSearch) {
+            dayCell.classList.add("has-event");
+            dayCell.style.setProperty("--event-color", `var(--color-m${dayEvent.module})`);
+            dayCell.style.setProperty("--event-color-rgb", `var(--color-m${dayEvent.module}-rgb)`);
+            dayCell.setAttribute("role", "button");
+            dayCell.setAttribute("tabindex", "0");
+            dayCell.setAttribute("aria-label", `${day} de ${MONTH_NAMES[monthIdx]}, aula: ${dayEvent.title}`);
+            
+            // Highlight special event types (holiday or opening/closing)
+            if (dayEvent.type === "holiday") {
+              dayCell.classList.remove("has-event");
+              dayCell.classList.add("holiday");
+              dayCell.setAttribute("aria-label", `${day} de ${MONTH_NAMES[monthIdx]}, feriado: ${dayEvent.title}`);
+            }
+
+            // Click listener
+            dayCell.addEventListener("click", (e) => {
+              e.stopPropagation();
+              selectDate(cellDateString, dayCell);
+            });
+
+            dayCell.addEventListener("keydown", (e) => {
+              if (e.key === "Enter" || e.key === " ") {
+                e.preventDefault();
+                selectDate(cellDateString, dayCell);
+              }
+            });
+
+            // If selected
+            if (selectedEventDate === cellDateString) {
+              dayCell.classList.add("selected");
+            }
+
+            // Visual Dot under the day number
+            const dot = document.createElement("span");
+            dot.className = "event-dot";
+            dayCell.appendChild(dot);
+          } else {
+            // Day has event but filtered out
+            dayCell.classList.add("dimmed");
+          }
+        }
+
+        daysGrid.appendChild(dayCell);
+      }
+
+      monthCard.appendChild(daysGrid);
+      return monthCard;
+    }
+
+    // Action when a date is selected
+    function selectDate(dateString, dayCellElement = null) {
+      selectedEventDate = dateString;
+      
+      // Update cell selections visually
+      document.querySelectorAll(".day-cell.selected").forEach(el => el.classList.remove("selected"));
+      if (dayCellElement) {
+        dayCellElement.classList.add("selected");
+      } else {
+        // Find cell on grid programmatically if opened from spotlight
+        const cells = document.querySelectorAll(".day-cell");
+        cells.forEach(cell => {
+          // Let's matching by finding cells
+        });
+      }
+
+      const event = COURSE_EVENTS.find(evt => evt.date === dateString);
+      if (!event) return;
+
+      // Populate Drawer fields
+      const dateObj = new Date(event.date + "T00:00:00");
+      const weekdayOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+      let displayDate = dateObj.toLocaleDateString('pt-BR', weekdayOptions);
+      displayDate = displayDate.charAt(0).toUpperCase() + displayDate.slice(1);
+      
+      if (event.time !== "-") {
+        const dateMZ = new Date(event.date + "T00:00:00");
+        dateMZ.setDate(dateMZ.getDate() + 1);
+        let displayDateMZ = dateMZ.toLocaleDateString('pt-BR', weekdayOptions);
+        displayDateMZ = displayDateMZ.charAt(0).toUpperCase() + displayDateMZ.slice(1);
+        
+        detailDate.innerHTML = `
+          <div style="display: flex; flex-direction: column; gap: 4px;">
+            <div style="display: flex; align-items: center; gap: 6px; font-size: 1.15rem; color: var(--text-color); font-weight: 700;">
+              <span>🇧🇷 BR:</span>
+              <span>${displayDate}</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 6px; font-size: 0.95rem; color: var(--text-muted); font-weight: 600;">
+              <span>🇲🇿 MZ:</span>
+              <span>${displayDateMZ}</span>
+            </div>
+          </div>
+        `;
+        detailTimeBadge.innerHTML = "🇧🇷 19:00 / 🇲🇿 00:00";
+      } else {
+        detailDate.textContent = displayDate;
+        detailTimeBadge.textContent = "Sem horário";
+      }
+      
+      detailTitle.textContent = event.title;
+      
+      detailModuleBadge.textContent = event.moduleTitle;
+      detailModuleBadge.style.setProperty("--module-color", `var(--color-m${event.module})`);
+      detailModuleBadge.style.setProperty("--module-color-rgb", `var(--color-m${event.module}-rgb)`);
+      detailModuleBadge.className = "badge badge-module";
+      
+      detailCHBadge.textContent = event.ch;
+      detailThemeMacro.textContent = event.theme;
+      detailDescription.innerHTML = event.description;
+
+      // Render teachers list
+      detailProfessorsList.innerHTML = "";
+      if (event.professors.length > 0) {
+        event.professors.forEach(prof => {
+          const profData = PROFESSORS_DB[prof] || { fullName: prof, lattes: null };
+          
+          const profItem = document.createElement("div");
+          profItem.className = "professor-item";
+          
+          const avatar = document.createElement("span");
+          avatar.className = "professor-avatar";
+          avatar.textContent = prof.slice(0, 2).toUpperCase();
+          avatar.style.background = `linear-gradient(135deg, var(--color-m${event.module}) 0%, rgba(var(--color-m${event.module}-rgb), 0.5) 100%)`;
+          
+          const textContainer = document.createElement("div");
+          textContainer.style.display = "flex";
+          textContainer.style.flexDirection = "column";
+          
+          const nameSpan = document.createElement("span");
+          nameSpan.className = "professor-name";
+          nameSpan.textContent = profData.fullName;
+          
+          textContainer.appendChild(nameSpan);
+          
+          if (profData.lattes) {
+            const lattesLink = document.createElement("a");
+            lattesLink.href = profData.lattes;
+            lattesLink.target = "_blank";
+            lattesLink.style.fontSize = "0.75rem";
+            lattesLink.style.color = "var(--accent-primary)";
+            lattesLink.style.textDecoration = "none";
+            lattesLink.style.fontWeight = "500";
+            lattesLink.style.marginTop = "2px";
+            lattesLink.style.display = "inline-flex";
+            lattesLink.style.alignItems = "center";
+            lattesLink.style.gap = "4px";
+            
+            lattesLink.innerHTML = `
+              <span>Currículo Lattes</span>
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" />
+              </svg>
+            `;
+            
+            textContainer.appendChild(lattesLink);
+          }
+          
+          profItem.appendChild(avatar);
+          profItem.appendChild(textContainer);
+          detailProfessorsList.appendChild(profItem);
+        });
+      } else {
+        detailProfessorsList.innerHTML = "<em style='font-size:0.85rem; color:var(--text-muted);'>Nenhum docente síncrono para este dia.</em>";
+      }
+
+      // Configure Google Calendar Link button
+      if (event.type !== "holiday") {
+        const formatCalDate = (dateStr, hourStr) => {
+          const cleanDate = dateStr.replace(/-/g, "");
+          const cleanTime = hourStr.replace(":", "") + "00";
+          // End time is +2 hours by default
+          const endHour = (parseInt(hourStr.split(":")[0]) + 2).toString() + "0000";
+          return `${cleanDate}T${cleanTime}/${cleanDate}T${endHour}`;
+        };
+
+        const calDates = formatCalDate(event.date, event.time !== "-" ? event.time : "19:00");
+        const detailsText = `${event.theme}. Docentes: ${event.professors.join(', ')}. Conteúdo: ${event.description.replace(/<[^>]*>/g, '')}`;
+        const gCalUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(event.title)}&dates=${calDates}&details=${encodeURIComponent(detailsText)}&location=${encodeURIComponent(event.location || "Google Classroom / Online")}&sf=true&output=xml`;
+        
+        addToCalendarBtn.style.display = "inline-flex";
+        addToCalendarBtn.onclick = () => window.open(gCalUrl, "_blank");
+
+        // ICS Generator
+        downloadIcsBtn.style.display = "inline-flex";
+        downloadIcsBtn.onclick = () => downloadIcsFile(event);
+
+        joinClassBtn.style.display = "inline-flex";
+        if (event.module === 5) {
+          joinClassBtn.textContent = "Acessar IA IARA";
+        } else {
+          joinClassBtn.textContent = "Entrar na Sala Virtual";
+        }
+        joinClassBtn.onclick = () => {
+          window.open("https://classroom.google.com/c/ODY0NDUzNjc2OTI1", "_blank");
+        };
+      } else {
+        addToCalendarBtn.style.display = "none";
+        downloadIcsBtn.style.display = "none";
+        joinClassBtn.style.display = "none";
+      }
+
+      // Open drawer
+      openDrawer();
+    }
+
+    // Drawer open/close with scrim + focus management
+    function openDrawer() {
+      lastFocusedBeforeDrawer = document.activeElement;
+      detailsDrawer.classList.add("open");
+      drawerOverlay.classList.add("open");
+      detailsDrawer.setAttribute("aria-hidden", "false");
+      // Move focus into the drawer for keyboard/screen-reader users
+      requestAnimationFrame(() => closeDrawerBtn.focus());
+    }
+
+    function closeDrawer() {
+      if (!detailsDrawer.classList.contains("open")) return;
+      detailsDrawer.classList.remove("open");
+      drawerOverlay.classList.remove("open");
+      detailsDrawer.setAttribute("aria-hidden", "true");
+      // Deselect highlighted cell
+      document.querySelectorAll(".day-cell.selected").forEach(el => el.classList.remove("selected"));
+      selectedEventDate = null;
+      // Restore focus to the trigger element
+      if (lastFocusedBeforeDrawer && typeof lastFocusedBeforeDrawer.focus === "function") {
+        lastFocusedBeforeDrawer.focus();
+      }
+      lastFocusedBeforeDrawer = null;
+    }
+
+    // Keep Tab focus trapped inside the open drawer
+    function trapDrawerFocus(e) {
+      if (e.key !== "Tab" || !detailsDrawer.classList.contains("open")) return;
+      const focusables = detailsDrawer.querySelectorAll(
+        'a[href], button:not([disabled]), input, [tabindex]:not([tabindex="-1"])'
+      );
+      const visible = Array.from(focusables).filter(el => el.offsetParent !== null);
+      if (visible.length === 0) return;
+      const first = visible[0];
+      const last = visible[visible.length - 1];
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
+      }
+    }
+
+    // Dynamic ICS Creator
+    function downloadIcsFile(event) {
+      const title = event.title;
+      const description = event.description.replace(/<[^>]*>/g, '');
+      const location = event.location || "Google Classroom / Online";
+      
+      const cleanDate = event.date.replace(/-/g, "");
+      const startHour = event.time !== "-" ? event.time.replace(":", "") + "00" : "190000";
+      // end hour +2h
+      const endHourVal = event.time !== "-" ? (parseInt(event.time.split(":")[0]) + 2).toString().padStart(2, "0") + "0000" : "210000";
+      
+      const icsContent = 
+`BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Curso Extensao 2026//NONSGML v1.0//PT
+BEGIN:VEVENT
+UID:${event.date}-curso-extensao-2026
+DTSTAMP:20260524T120000Z
+DTSTART:${cleanDate}T${startHour}
+DTEND:${cleanDate}T${endHourVal}
+SUMMARY:${title}
+DESCRIPTION:${description}
+LOCATION:${location}
+END:VEVENT
+END:VCALENDAR`;
+
+      const blob = new Blob([icsContent], { type: "text/calendar;charset=utf-8" });
+      const link = document.createElement("a");
+      link.href = URL.createObjectURL(blob);
+      link.download = `${event.date}-${title.toLowerCase().replace(/\s+/g, "-")}.ics`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+
+    // Spotlight logic: find nearest upcoming event based on system date
+    function setupSpotlight() {
+      // System local time in the environment is May 24, 2026
+      const systemDateStr = "2026-05-24";
+      const systemDate = new Date(systemDateStr + "T00:00:00");
+      
+      // Find first event with date >= systemDate
+      const upcomingEvent = COURSE_EVENTS.find(evt => {
+        const evtDate = new Date(evt.date + "T00:00:00");
+        return evtDate >= systemDate;
+      });
+
+      if (upcomingEvent) {
+        spotlightBanner.style.display = "flex";
+        spotlightTitle.textContent = upcomingEvent.title;
+        
+        const dateObj = new Date(upcomingEvent.date + "T00:00:00");
+        const weekdayOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+        let displayDate = dateObj.toLocaleDateString('pt-BR', weekdayOptions);
+        displayDate = displayDate.charAt(0).toUpperCase() + displayDate.slice(1);
+        
+        if (upcomingEvent.time !== "-") {
+          const dateMZ = new Date(upcomingEvent.date + "T00:00:00");
+          dateMZ.setDate(dateMZ.getDate() + 1);
+          let displayDateMZ = dateMZ.toLocaleDateString('pt-BR', weekdayOptions);
+          displayDateMZ = displayDateMZ.charAt(0).toUpperCase() + displayDateMZ.slice(1);
+
+          spotlightDate.innerHTML = `
+            <div style="display: flex; flex-direction: column; gap: 4px; margin-top: 6px;">
+              <div style="display: flex; align-items: center; gap: 6px; font-size: 0.85rem; color: var(--text-color);">
+                <span>🇧🇷 Brasil:</span>
+                <strong>${displayDate} às 19:00</strong>
+              </div>
+              <div style="display: flex; align-items: center; gap: 6px; font-size: 0.85rem; color: var(--text-muted);">
+                <span>🇲🇿 Moçambique:</span>
+                <strong>${displayDateMZ} às 00:00</strong>
+              </div>
+            </div>
+          `;
+        } else {
+          spotlightDate.textContent = displayDate;
+        }
+        
+        if (upcomingEvent.module > 0) {
+          spotlightTag.textContent = `PRÓXIMA AULA - Módulo ${upcomingEvent.module}`;
+          spotlightTag.style.color = `var(--color-m${upcomingEvent.module})`;
+        } else {
+          spotlightTag.textContent = `EVENTO DE ABERTURA`;
+          spotlightTag.style.color = `var(--color-m0)`;
+        }
+
+        spotlightActionBtn.onclick = () => {
+          selectDate(upcomingEvent.date);
+        };
+      } else {
+        // No upcoming events (course finished)
+        spotlightBanner.style.display = "none";
+      }
+    }
+
+    // 5. Listener Management
+    function setupListeners() {
+      // Search
+      searchInput.addEventListener("input", (e) => {
+        searchQuery = e.target.value;
+        renderDashboard();
+      });
+
+      // Module filters tabs click
+      moduleFilters.querySelectorAll(".filter-tab").forEach(tab => {
+        tab.addEventListener("click", () => {
+          moduleFilters.querySelector(".filter-tab.active").classList.remove("active");
+          tab.classList.add("active");
+          
+          currentFilter = tab.getAttribute("data-module");
+          
+          // Update title and sub-headers dynamically
+          updateDashboardHeaders();
+          
+          renderDashboard();
+        });
+      });
+
+      // Drawer Close (button, scrim click, focus trap)
+      closeDrawerBtn.addEventListener("click", closeDrawer);
+      drawerOverlay.addEventListener("click", closeDrawer);
+      detailsDrawer.addEventListener("keydown", trapDrawerFocus);
+
+      // Theme toggle trigger buttons
+      document.querySelectorAll(".theme-btn").forEach(btn => {
+        btn.addEventListener("click", () => {
+          document.querySelector(".theme-btn.active").classList.remove("active");
+          btn.classList.add("active");
+          
+          const themeVal = btn.getAttribute("data-theme-val");
+          applyTheme(themeVal);
+        });
+      });
+
+      // Shortcut `/` to open search
+      window.addEventListener("keydown", (e) => {
+        if (e.key === "/" && document.activeElement !== searchInput) {
+          e.preventDefault();
+          searchInput.focus();
+        }
+        // ESC closes the open details drawer
+        if (e.key === "Escape") {
+          closeDrawer();
+        }
+      });
+    }
+
+    // Dynamic Headers based on Module Filtering
+    function updateDashboardHeaders() {
+      const info = MODULE_INFOS[currentFilter];
+      sectionMainTitle.textContent = info.title;
+      sectionMainDesc.textContent = `${info.desc} • ${info.duration} (${info.classes})`;
+    }
+
+    // Theme Switch
+    function applyTheme(theme) {
+      localStorage.setItem("preferred-theme", theme);
+      if (theme === "system") {
+        document.documentElement.removeAttribute("data-theme");
+      } else {
+        document.documentElement.setAttribute("data-theme", theme);
+      }
+    }
+  </script>
+</body>
+</html>
