@@ -1357,9 +1357,6 @@
         </svg>
         Adicionar ao Google Agenda
       </button>
-      <button class="btn btn-secondary" id="downloadIcsBtn" style="font-size: 0.8rem; padding: 0.5rem;">
-        Baixar Convite (ICS)
-      </button>
     </div>
   </aside>
 
@@ -1857,7 +1854,6 @@
     const detailDescription = document.getElementById("detailDescription");
     const detailProfessorsList = document.getElementById("detailProfessorsList");
     const addToCalendarBtn = document.getElementById("addToCalendarBtn");
-    const downloadIcsBtn = document.getElementById("downloadIcsBtn");
     const joinClassBtn = document.getElementById("joinClassBtn");
     
     // Text Labels on Headers
@@ -2201,10 +2197,6 @@
         addToCalendarBtn.style.display = "inline-flex";
         addToCalendarBtn.onclick = () => window.open(gCalUrl, "_blank");
 
-        // ICS Generator
-        downloadIcsBtn.style.display = "inline-flex";
-        downloadIcsBtn.onclick = () => downloadIcsFile(event);
-
         joinClassBtn.style.display = "inline-flex";
         if (event.module === 5) {
           joinClassBtn.textContent = "Acessar IA IARA";
@@ -2216,7 +2208,6 @@
         };
       } else {
         addToCalendarBtn.style.display = "none";
-        downloadIcsBtn.style.display = "none";
         joinClassBtn.style.display = "none";
       }
 
@@ -2266,41 +2257,6 @@
         e.preventDefault();
         first.focus();
       }
-    }
-
-    // Dynamic ICS Creator
-    function downloadIcsFile(event) {
-      const title = event.title;
-      const description = event.description.replace(/<[^>]*>/g, '');
-      const location = event.location || "Google Classroom / Online";
-      
-      const cleanDate = event.date.replace(/-/g, "");
-      const startHour = event.time !== "-" ? event.time.replace(":", "") + "00" : "190000";
-      // end hour +2h
-      const endHourVal = event.time !== "-" ? (parseInt(event.time.split(":")[0]) + 2).toString().padStart(2, "0") + "0000" : "210000";
-      
-      const icsContent = 
-`BEGIN:VCALENDAR
-VERSION:2.0
-PRODID:-//Curso Extensao 2026//NONSGML v1.0//PT
-BEGIN:VEVENT
-UID:${event.date}-curso-extensao-2026
-DTSTAMP:20260524T120000Z
-DTSTART:${cleanDate}T${startHour}
-DTEND:${cleanDate}T${endHourVal}
-SUMMARY:${title}
-DESCRIPTION:${description}
-LOCATION:${location}
-END:VEVENT
-END:VCALENDAR`;
-
-      const blob = new Blob([icsContent], { type: "text/calendar;charset=utf-8" });
-      const link = document.createElement("a");
-      link.href = URL.createObjectURL(blob);
-      link.download = `${event.date}-${title.toLowerCase().replace(/\s+/g, "-")}.ics`;
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
     }
 
     // Spotlight logic: find nearest upcoming event based on system date
