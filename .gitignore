@@ -8,5 +8,9 @@ temp.md
 # Documentos locais de especificação (não vão para o deploy)
 docs/
 
+# Documentos internos (mantidos só localmente, fora do GitHub)
+AGENTS.md
+handoff.md
+
 # Tooling
 .claude/
