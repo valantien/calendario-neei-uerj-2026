@@ -21,7 +21,7 @@ Ao trabalhar neste projeto, você deve assumir o papel de um engenheiro front-en
 O projeto utiliza a especificação de camadas em CSS (`@layer reset, design-tokens, base, layouts, components, utilities`) para manter a legibilidade das folhas de estilo e evitar colisões.
 
 ### Variáveis CSS Importantes (`:root`)
-* **Fontes**: `Outfit` para títulos e cabeçalhos; `Inter` para legibilidade de textos longos.
+* **Fontes**: `JetBrains Mono` (monoespaçada) para marca/logo, títulos de seção, números, tags, chips, rótulos e cabeçalhos (token `--font-heading`); `IBM Plex Sans` para o corpo de texto e legibilidade de textos longos (token `--font-body`).
 * **Módulos**: Cada módulo acadêmico possui uma cor RGB específica mapeada em variáveis CSS (ex: `--color-m5-rgb` para Chatbot IARA, `--color-m3-rgb` para CIF). Utilize essas variáveis com transparências para criar efeitos de hover consistentes.
 * **Temas**: Suporte a auto-detecção de tema escuro/claro (`color-scheme: dark light`) com variáveis ajustadas sob `@media (prefers-color-scheme)`.
 

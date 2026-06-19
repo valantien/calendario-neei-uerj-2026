@@ -11,3 +11,4 @@ docs/
 # Tooling
 .vercel/
 .claude/
+.vercel
