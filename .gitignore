@@ -1,9 +1,12 @@
 # ============================================================
-#  REGRA PRINCIPAL
-#  Tudo dentro de _local/ é seu, fica só no seu computador
-#  e NUNCA vai para o GitHub. Guarde aqui seus arquivos
-#  privados: AGENTS.md, handoff.md, anotações, PDFs, rascunhos.
+#  O QUE FICA SÓ NO SEU COMPUTADOR (não vai para o GitHub)
 # ============================================================
+
+# Seus arquivos de apoio à IA, na raiz do projeto
+AGENTS.md
+handoff.md
+
+# Sua gaveta privada: tudo aqui dentro fica só no seu PC
 _local/
 
 # Lixo do sistema operacional (Mac)
