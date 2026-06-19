@@ -1,16 +1,14 @@
-# OS
+# ============================================================
+#  REGRA PRINCIPAL
+#  Tudo dentro de _local/ é seu, fica só no seu computador
+#  e NUNCA vai para o GitHub. Guarde aqui seus arquivos
+#  privados: AGENTS.md, handoff.md, anotações, PDFs, rascunhos.
+# ============================================================
+_local/
+
+# Lixo do sistema operacional (Mac)
 .DS_Store
 
-# Backups / arquivos temporários
+# Arquivos compactados e ferramentas
 *.zip
-temp.md
-
-# Documentos locais de especificação (não vão para o deploy)
-docs/
-
-# Documentos internos (mantidos só localmente, fora do GitHub)
-AGENTS.md
-handoff.md
-
-# Tooling
 .claude/
