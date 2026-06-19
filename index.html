@@ -885,6 +885,28 @@
         background: rgba(239, 68, 68, 0.1);
       }
 
+      /* Today marker (auto-detected on load) */
+      .day-cell.today {
+        outline: 2px solid var(--text-color);
+        outline-offset: 1px;
+        font-weight: 700;
+      }
+
+      .day-cell.today::before {
+        content: "";
+        position: absolute;
+        top: 3px;
+        right: 3px;
+        width: 5px;
+        height: 5px;
+        border-radius: 50%;
+        background: var(--text-color);
+      }
+
+      .day-cell.today.has-event.selected {
+        outline-color: var(--text-inverse);
+      }
+
       /* Spotlight Banner */
       .spotlight-banner {
         background: linear-gradient(135deg, rgba(var(--color-m5-rgb), 0.15) 0%, rgba(var(--color-m2-rgb), 0.1) 100%);
@@ -1987,6 +2009,10 @@
         daysGrid.appendChild(emptyCell);
       }
 
+      // Today's real date (device local time), as YYYY-MM-DD for comparison
+      const now = new Date();
+      const todayString = `${now.getFullYear()}-${(now.getMonth() + 1).toString().padStart(2, "0")}-${now.getDate().toString().padStart(2, "0")}`;
+
       // Calendar Days
       for (let day = 1; day <= numDays; day++) {
         const dayCell = document.createElement("div");
@@ -1997,7 +2023,13 @@
         const formattedMonth = (monthIdx + 1).toString().padStart(2, "0");
         const formattedDay = day.toString().padStart(2, "0");
         const cellDateString = `${year}-${formattedMonth}-${formattedDay}`;
-        
+
+        // Mark today (auto-detected from the visitor's device date)
+        if (cellDateString === todayString) {
+          dayCell.classList.add("today");
+          dayCell.setAttribute("title", "Hoje");
+        }
+
         // Find if this specific day has an event
         const dayEvent = COURSE_EVENTS.find(evt => evt.date === cellDateString);
         
