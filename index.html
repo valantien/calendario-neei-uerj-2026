@@ -2293,9 +2293,9 @@
 
     // Spotlight logic: find nearest upcoming event based on system date
     function setupSpotlight() {
-      // System local time in the environment is May 24, 2026
-      const systemDateStr = "2026-05-24";
-      const systemDate = new Date(systemDateStr + "T00:00:00");
+      // Real device date (time zeroed) so the banner tracks the visitor's "today"
+      const now = new Date();
+      const systemDate = new Date(now.getFullYear(), now.getMonth(), now.getDate());
       
       // Find first event with date >= systemDate
       const upcomingEvent = COURSE_EVENTS.find(evt => {
