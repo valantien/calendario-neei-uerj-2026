@@ -1271,9 +1271,9 @@
           Aparência
         </span>
         <div class="theme-btn-group">
-          <button class="theme-btn active" data-theme-val="system">Auto</button>
+          <button class="theme-btn" data-theme-val="system">Auto</button>
           <button class="theme-btn" data-theme-val="dark">Escuro</button>
-          <button class="theme-btn" data-theme-val="light">Claro</button>
+          <button class="theme-btn active" data-theme-val="light">Claro</button>
         </div>
       </div>
 
@@ -1902,7 +1902,7 @@
 
     function initApp() {
       // 1. Theme Auto Detect & Apply
-      const savedTheme = localStorage.getItem("preferred-theme") || "dark";
+      const savedTheme = localStorage.getItem("preferred-theme") || "light";
       applyTheme(savedTheme);
 
       // Highlight the correct theme button on load
